@@ -1,5 +1,5 @@
 import java.io.*;
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,28 +58,41 @@ public class nsort {
         }
 
 
-        public static void read1(String args) {
+        public static String[][] read1(String args) {
             String csvfile = "/Users/davi2705/Documents/Nprog/test_trace2.csv";
             String thisfile = new String(args);
             BufferedReader br = null;
+            BufferedReader brr = null;
             String line = "";
+            String liner = "";
             String cvsSplitBy = ",";
-            String[][] dlist = new String[16][15];
+            char cvsSplitq = '"';
+            String[][] dlist = new String[0][0];
             int x = 0;
+            int row = 0;
             try {
+                //set size of dlist matrix
                 br = new BufferedReader(new FileReader(thisfile));
+                brr = new BufferedReader(new FileReader(thisfile));
+                int column = br.readLine().split(cvsSplitBy).length;
+                while((liner = brr.readLine()) != null){
+                    row += 1;
+                    //System.out.println(row);
+                }
+                dlist = new String[row][column];
+
+                //read file and fill matrix
                 while ((line = br.readLine()) != null) {
                     String[] name = line.split(cvsSplitBy);
-                    System.out.println(hpnt1);
-                    //System.out.println(line);
+                    //System.out.println(hpnt1);
+                    System.out.println(name.length);
                     while (x<16) {
-                        dlist[x][hpnt1] = name[x];
-                        System.out.println(dlist[x][hpnt1]);
+                        dlist[hpnt1][x] = name[x];
+                        //System.out.println(dlist[hpnt1][x]);
                         x+=1;
                     }
                     hold1[hpnt1] = line;
                     x = 0;
-                    //System.out.println("Drawer = " + name[0] + " person is " + name[1]);
                     hpnt1 +=1;
                 }
             } catch (FileNotFoundException e) {
@@ -95,79 +108,34 @@ public class nsort {
                     }
                 }
             }
-            System.out.println(dlist[8][8]);
-
+            //System.out.println(dlist[8][8]);
+        return dlist;
         }
-        public static void read2(String args) {
-            String csvfile = "/Users/davi2705/Downloads/PRD_AdminList.csv";
-            String thisfile = new String(args);
-            BufferedReader br = null;
-            String line = "";
-            String cvsSplitBy = ",";
-            try {
-                br = new BufferedReader(new FileReader(thisfile));
-                while ((line = br.readLine()) != null) {
-                    String[] name = line.split(cvsSplitBy);
-                    //System.out.println(hpnt2);
-                    System.out.println(name[1]);
-                    hold2[hpnt2] = name[0];
-                    //System.out.println("Drawer = " + name[0] + " person is " + name[1]);
-                    hpnt2 +=1;
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (br != null) {
-                    try {
-                        br.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
 
-        }
         public static void main(String[]args) throws Exception{
             String wrfile = "/Users/davi2705/Documents/neat.csv";
             FileWriter writer = new FileWriter(wrfile);
             nsort.wrt(writer, Arrays.asList("its","over","9000"));
 
-            read1("/Users/davi2705/Documents/Nprog/traced/traces/test_trace2.csv");
+            //read1("/Users/davi2705/Documents/Nprog/traced/traces/test_trace2.csv");
+            Neuron n1 = new Neuron("test_trace2.csv");
+           // System.out.println(n1.dendriteNum);
+
            // read2("/Users/davi2705/Downloads/Dept_Acronyms.csv");
 
             ///System.out.println(hold1[3]);
            //System.out.println(hold2[3]);
             //nsort.wrt(writer, Arrays.asList(hold1[5],hold2[100]));
+            n1.setDendrites();
 
-           /* for( String val1 : hold1) {
-                if (val1 != null) {
-                    //System.out.println(val1);
-                    if (val1.length() > 9) {
-                        String[] vals = val1.split(" ");
-                        for (String valss : vals) {
-                            if (valss != null) {
-                                for (String vals2 : hold2) {
-                                    if (valss.equals(vals2)) {
-                                        nsort.wrt(writer, Arrays.asList(vals2));
-                                        System.out.println("found one  " + vals2);
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        for (String val2 : hold2) {
-                            if (val2 != null) {
-                                if (val1.equals(val2)){
-                                    System.out.println(val1 + " " + val2);
-                                    nsort.wrt(writer, Arrays.asList(val2));
-                                }
-                            }
-                        }
-                    }
-                }
-            }*/
+            String num = new String("9.34E-04");
+            double hold = (Double.valueOf(num)).doubleValue();
+
+
+            //double hold = (Double.valueOf("9.34E-04")).doubleValue();
+            //System.out.println(hold);
+
+
             writer.flush();
             writer.close();
         }
