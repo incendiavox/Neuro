@@ -9,12 +9,14 @@ public class Neuron {
     int dendriteNum;
     String neuronName;
     String[][] neuronData;
+    final List<Dendrite> dendlist = new ArrayList<>();
     //constructor of neuron object
     public Neuron(String filename){
         neuronData = nsort.read1("/Users/davi2705/Documents/Nprog/traced/traces/"+filename);
         dendriteNum = neuronData.length;
         dendriteNum -= 1;
         neuronName = filename;
+
         //String[] dendrit =  neuronData[3];
         //System.out.println(neuronData[1][1]);
     }
@@ -22,7 +24,8 @@ public class Neuron {
         int hold = dendriteNum;
         int x = 1;
         int y = 0;
-        final List<Dendrite> dendlist = new ArrayList<>();
+        int pare;
+
 
         //while loop to create the right number of dendrite objects with info put in
         while( x < hold){
@@ -35,12 +38,16 @@ public class Neuron {
             //System.out.println(dinfo[6]);  good
             //System.out.println(dinfo[9]);
             //System.out.println(dinfo[10]);
-            //System.out.println(Integer.parseInt(dinfo[6]));
+            try {
+                pare = Integer.valueOf(dinfo[9]);
+            }catch(NumberFormatException e){
+                 pare = 0;
+            }
             //System.out.println(dinfo[9]);
             //System.out.println(dosomemath);
 
-            //dendlist.add(new Dendrite(Integer.parseInt(dinfo[0]),
-                   // placeholder,dinfo[4],Integer.parseInt(dinfo[6]),dinfo[9],dosomemath));
+            dendlist.add(new Dendrite(Integer.parseInt(dinfo[0]),
+                    placeholder,dinfo[4],pare,dinfo[9],dosomemath));
             x++;
         }
         //System.out.println(dendlist);
