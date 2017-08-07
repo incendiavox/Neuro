@@ -20,6 +20,7 @@ public class Dendrite {
         parentD = d;
         children = e;
         childnum = f;
+        System.out.println("dendrite made "+id);
 
     }
 

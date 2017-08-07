@@ -13,7 +13,7 @@ public class nsort {
 
 
         private static final char ds = ',';
-        static String[] hold1 = new String[800];
+        static String[] hold1;
         static int hpnt1;
         static String[] hold2 = new String[800];
         static int hpnt2;
@@ -60,13 +60,14 @@ public class nsort {
 
         public static String[][] read1(String args) {
             String csvfile = "/Users/davi2705/Documents/Nprog/test_trace2.csv";
+            String[] hold1 = new String[800];
+            int hpnt1 = 0;
             String thisfile = new String(args);
             BufferedReader br = null;
             BufferedReader brr = null;
             String line = "";
             String liner = "";
             String cvsSplitBy = ",";
-            char cvsSplitq = '"';
             String[][] dlist = new String[0][0];
             int x = 0;
             int row = 0;
@@ -77,18 +78,22 @@ public class nsort {
                 int column = br.readLine().split(cvsSplitBy).length;
                 while((liner = brr.readLine()) != null){
                     row += 1;
-                    //System.out.println(row);
+
                 }
                 dlist = new String[row][column];
+                //System.out.println(column);
+                //System.out.println(row);
 
                 //read file and fill matrix
                 while ((line = br.readLine()) != null) {
-                    String[] name = line.split(cvsSplitBy);
+                    //String[] name = line.split(cvsSplitBy);
+                    String[] name = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
                     //System.out.println(hpnt1);
-                    System.out.println(name.length);
+                    //System.out.println(name.length);
                     while (x<16) {
+                        //System.out.println(x);
                         dlist[hpnt1][x] = name[x];
-                        //System.out.println(dlist[hpnt1][x]);
+
                         x+=1;
                     }
                     hold1[hpnt1] = line;
@@ -119,6 +124,7 @@ public class nsort {
 
             //read1("/Users/davi2705/Documents/Nprog/traced/traces/test_trace2.csv");
             Neuron n1 = new Neuron("test_trace2.csv");
+            Neuron n2 = new Neuron("test_trace1.csv");
            // System.out.println(n1.dendriteNum);
 
            // read2("/Users/davi2705/Downloads/Dept_Acronyms.csv");
@@ -127,9 +133,15 @@ public class nsort {
            //System.out.println(hold2[3]);
             //nsort.wrt(writer, Arrays.asList(hold1[5],hold2[100]));
             n1.setDendrites();
+            n2.setDendrites();
 
             String num = new String("9.34E-04");
             double hold = (Double.valueOf(num)).doubleValue();
+            double d = n1.dendlist.get(0).dendLeng;
+            double d2 = n2.dendlist.get(0).dendLeng;
+            System.out.println(d+ " "+d2);
+
+            System.out.println((d+d2)/2.0);
 
 
             //double hold = (Double.valueOf("9.34E-04")).doubleValue();
