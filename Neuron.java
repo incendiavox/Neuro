@@ -14,6 +14,10 @@ public class Neuron {
     double avgprimlen; //average primary length
     double avgseclen;  //average secondary length
     double avgtertlen; //average teriary length
+    double dendlensum; //total dendrite length of neuron
+    double dend_1lensum; // total primary length for neuron  "these need the math hooked up"
+    double dend_2lensum; // total secondery length for neuron
+    double dend_3lensum; // total tertiary length for neuron
     String neuronName;  //file name of neuron
     private String[][] neuronData; //data for neuron
     final List<Dendrite> dendlist = new ArrayList<>();

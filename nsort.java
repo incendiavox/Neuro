@@ -220,7 +220,7 @@ public class nsort {
             Neuron n1 = new Neuron("test_trace2.csv");
             Neuron n3 = new Neuron("test_trace3.csv");
             Neuron n2 = new Neuron("test_trace1.csv");
-            Neuron n4 = new Neuron("EmilyMM3-01--17-DIV19-10uMDFO_12_MMStack_Pos0.ome.csv");
+            //Neuron n4 = new Neuron("EmilyMM3-01--17-DIV19-10uMDFO_12_MMStack_Pos0.ome.csv");
 
             //nsort.wrt(writer, Arrays.asList(hold1[5],hold2[100]));
 
@@ -232,12 +232,12 @@ public class nsort {
             neuronList.add(n1);
             neuronList.add(n3);
             neuronList.add(n2);
-            neuronList.add(n4);
-            Dendrite d312 = neuronList.get(1).dendlist.get(1);
-            Dendrite d2 = neuronList.get(2).dendlist.get(3);
+            //neuronList.add(n4);
+            //Dendrite d312 = neuronList.get(1).dendlist.get(1);
+            //Dendrite d2 = neuronList.get(2).dendlist.get(3);
             //System.out.println(d312.id + " " + d312.dendLeng);
             //System.out.println(d2.id + " " + d312.dendLeng);
-            Dendrite d3 = neuronList.get(0).dendlist.get(4);
+           // Dendrite d3 = neuronList.get(0).dendlist.get(4);
             //System.out.println(d312.level);
             //System.out.println();
             //System.out.println(neuronList.get(1).dendlist.size());
@@ -249,7 +249,7 @@ public class nsort {
             CrunchData data = new CrunchData(neuronList);
             //nsort.wrt(writer, Arrays.asList(d3.id+" "+d3.dendLeng,d312.level));
 
-
+            System.out.println(n1.dend_1lensum);
             writer.flush();
             writer.close();
         }

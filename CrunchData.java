@@ -17,6 +17,11 @@ public class CrunchData {
     double avgsecln = 0; //average secondary length
     double avgtert = 0;  //average number of tertiaries
     double avgtertln = 0;  //average length of tertiaries
+    double totdendlen = 0; //total dendrite length of all in cell
+    double totdendlen1 = 0; // total primary dendrite length
+    double totdendlen2 = 0; // total secondary dendrite length
+    double totdendlen3 = 0; // total tertiary dendlength
+    double branchnum = 0;  //number of branches
     //branches without primaries included
     Dendrite longprm = new Dendrite("0", 0, "0", "0", 0, "0", 0); //longest primary dendrite: neuron, dendrite, length
     Dendrite longsec = new Dendrite("0", 0, "0", "0", 0, "0", 0);  //longest secondary dendrite: neuron, dendrite, length
@@ -29,7 +34,7 @@ public class CrunchData {
     Neuron cnur;  //current neuron from list
     public CrunchData(List<Neuron> Neuronlistdata) throws Exception {
         List<Neuron> nldata = Neuronlistdata;  //nldata is imported list of neurons
-        String wrfile = "/Users/davi2705/Documents/neattest.xlsx";
+        String wrfile = "/Users/davi2705/Documents/neat.csv";
         FileWriter writer = null;
         writer = new FileWriter(wrfile);
         nsort.wrt(writer, Arrays.asList("neuron","number of primaries","number of secondaries","number of tertiaries","avg dendrite length"));
@@ -48,6 +53,7 @@ public class CrunchData {
                 if (cden.level.equals("Primary")) {
                     avgprm++;
                     avgprmln += cden.dendLeng;
+                    cnur.dend_1lensum+=cden.dendLeng;
 
                     if (longprm.dendLeng < cden.dendLeng) {
                         longprm = cden;
@@ -55,6 +61,7 @@ public class CrunchData {
                 } else if (cden.level.equals("Secondary")) {
                     avgsec++;
                     avgsecln += cden.dendLeng;
+                    cnur.dend_2lensum+=cden.dendLeng;
 
                     if (longsec.dendLeng < cden.dendLeng) {
                         longsec = cden;
@@ -62,6 +69,7 @@ public class CrunchData {
                 } else if (cden.level.equals("Tertiary")) {
                     avgtert++;
                     avgtertln += cden.dendLeng;
+                    cnur.dend_3lensum+=cden.dendLeng;
                     if (longtert.dendLeng < cden.dendLeng) {
                         longtert = cden;
                     }
@@ -87,6 +95,11 @@ public class CrunchData {
 
             x++;
         }
+        totdendlen = avgdln;
+        totdendlen1 = avgprmln; //check these and make sure they are working as intended
+        totdendlen2 = avgsecln; //check these and make sure they are working as intended
+        totdendlen3 = avgtertln; //check these and make sure they are working as intended
+        branchnum = avgsec+avgtert;
         avgprmln = (avgprmln / avgprm);
         avgsecln = (avgsecln / avgsec);
         avgtertln = (avgtertln / avgtert);
@@ -106,11 +119,15 @@ public class CrunchData {
         System.out.println("longest secondary is on neuron " + longsec.pneuron + "  id= " + longsec.id + " length= " + longsec.dendLeng);
         System.out.println("average number of tertiaries per neuron = " + avgtert);
         System.out.println("average tertiary length = " + avgtertln);
+        //System.out.println(totdendlen+" "+totdendlen1+" "+ totdendlen2+" "+totdendlen3);
         String[] ff = new String[]{"average primary length = ", Double.toString(avgprmln)+"um","longest primary is on neuron ", longprm.pneuron ,
                 "  id= "+Double.toString(longprm.id) , " length= " , Double.toString(longprm.dendLeng)+"um"};
         nsort.wrt(writer,Arrays.asList(ff));
-        String[] pp = new String[]{"average secondary length = " ,Double.toString( avgsecln)+"um", "worked to add excel"};
+        String[] pp = new String[]{"average secondary length = " ,Double.toString( avgsecln)+"um"};
+        String[] qqq = new String[]{"population dendrite length ", Double.toString(totdendlen),"pop primary dendrite length",Double.toString(totdendlen1),
+                "pop second dendrite length",Double.toString(totdendlen2) , "pop tert dendrite length",Double.toString(totdendlen3)};
         nsort.wrt(writer,Arrays.asList(pp));
+        nsort.wrt(writer,Arrays.asList(qqq));
         writer.flush();
         writer.close();
 
