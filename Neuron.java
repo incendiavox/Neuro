@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by davi2705 on 8/3/2017.
@@ -10,6 +11,7 @@ public class Neuron {
     int primnum; //number of primaries on a neuron
     int secnum;  //number of secondaries on a neuron
     int tertnum;  //number of tertiaries
+    int nnn; //where length data is
     double avgdlen; //average dendrite length for neuron
     double avgprimlen; //average primary length
     double avgseclen;  //average secondary length
@@ -22,8 +24,10 @@ public class Neuron {
     private String[][] neuronData; //data for neuron
     final List<Dendrite> dendlist = new ArrayList<>();
     //constructor of neuron object
-    public Neuron(String filename){
-        neuronData = nsort.read1("/Users/davi2705/Documents/Nprog/traced/traces/"+filename);
+    public Neuron(String filename,int n){
+        neuronData = nsort.read1(filename);
+         nnn = n;
+        //neuronData = nsort.read1("/Users/davi2705/Documents/Nprog/traced/traces/"+filename);  for test files
         dendriteNum = neuronData.length;
         dendriteNum -= 1;
 
@@ -40,13 +44,17 @@ public class Neuron {
         int q = 0;
         int pare;
 
-
+/*        Scanner reader = new Scanner(System.in);  // Reading from System.in
+        System.out.println("Enter column with length data: ");
+        int n = reader.nextInt(); // Scans the next token of the input as an int.
+//once finished
+        reader.close();*/
         //while loop to create the right number of dendrite objects with info put in
         while( x < hold){
             String[] dinfo = neuronData[x];
             String ary = new String("True");
             int dosomemath = 1; //do math to figure out how many kids
-            if(dinfo[3].equals("true")||dinfo[3].equals("TRUE")||dinfo[3].equals("True")){
+            if(dinfo[3].equals("true")||dinfo[nnn-1].equals("TRUE")||dinfo[nnn-1].equals("True")){
                 ary = "Primary";
                 primnum++;
                 try {
@@ -87,15 +95,20 @@ public class Neuron {
 
             //takes care of empty cells
             try {
-                pare = Integer.valueOf(dinfo[9]);
+                pare = Integer.valueOf(dinfo[nnn+5]);
             }catch(NumberFormatException e){
                  pare = 0;
             }
             //System.out.println(dinfo[9]);
             //System.out.println(dinfo[3]);
+            //hard coded
+           // dendlist.add(new Dendrite(neuronName,Integer.parseInt(dinfo[0]),
+               //     ary,dinfo[4],pare,dinfo[9],dosomemath));
+            // user input
             dendlist.add(new Dendrite(neuronName,Integer.parseInt(dinfo[0]),
-                    ary,dinfo[4],pare,dinfo[9],dosomemath));
-            avgdlen+= Double.valueOf(dinfo[4]);
+                    ary,dinfo[nnn],pare,dinfo[(nnn+5)],dosomemath));
+
+            avgdlen+= Double.valueOf(dinfo[nnn]);
             x++;
         }
         avgdlen= avgdlen/dendriteNum;

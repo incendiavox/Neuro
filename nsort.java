@@ -1,7 +1,9 @@
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by davi2705 on 8/1/2017.
@@ -89,8 +91,8 @@ public class nsort {
                 while ((line = br.readLine()) != null) {
                     //String[] name = line.split(cvsSplitBy);
                     String[] name = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
-                    //System.out.println(hpnt1);
-                    //System.out.println(name);
+                    //System.out.println();
+                    //System.out.println(line);
                     while (x<15) {//x is which column is being read
                         //System.out.println(x);
                         dlist[hpnt1][x] = name[x];
@@ -215,7 +217,7 @@ public class nsort {
             FileWriter writer = new FileWriter(wrfile);
             //nsort.wrt(writer, Arrays.asList("its","over","9000"));
 
-
+/*    hard coded testing
             //read1("/Users/davi2705/Documents/Nprog/traced/traces/test_trace2.csv");
             Neuron n1 = new Neuron("test_trace2.csv");
             Neuron n3 = new Neuron("test_trace3.csv");
@@ -249,7 +251,46 @@ public class nsort {
             CrunchData data = new CrunchData(neuronList);
             //nsort.wrt(writer, Arrays.asList(d3.id+" "+d3.dendLeng,d312.level));
 
-            System.out.println(n1.dend_1lensum);
+            //System.out.println(n1.dend_1lensum);
+
+            writer.flush();
+            writer.close();*/
+
+            //opens file
+            File file = new File("/Users/davi2705/Documents/neat.csv");
+
+            //first check if Desktop is supported by Platform or not
+            if(!Desktop.isDesktopSupported()){
+                System.out.println("Desktop is not supported");
+                return;
+            }
+
+            Desktop desktop = Desktop.getDesktop();
+           // if(file.exists()) desktop.open(file);
+
+            // loop to add files to list
+
+            Scanner reader = new Scanner(System.in);  // Reading from System.in
+            System.out.println("Enter column with length data: ");
+            int n = reader.nextInt(); // Scans the next token of the input as an int.
+//once finished
+            reader.close();
+
+            GetCSVs emdata = new GetCSVs(); //"/Users/davi2705/Documents/Nprog/traced/cntrl exdose traced");
+            emdata.GetCSVs("/Users/davi2705/Documents/Nprog/traced/cntrl exdose traced");
+            System.out.println(emdata.csvlist.size());
+            int numfoundfiles = emdata.csvlist.size();
+            int cfile = 0;
+            while(cfile < numfoundfiles){
+               // System.out.println(emdata.csvlist.get(cfile));
+                Neuron addneuron = new Neuron(emdata.csvlist.get(cfile),n);
+                //System.out.println(addneuron.neuronName);
+                neuronList.add(addneuron);
+                cfile+=1;
+            }
+
+            CrunchData data = new CrunchData(neuronList);
+
             writer.flush();
             writer.close();
         }
@@ -260,8 +301,6 @@ public class nsort {
 //population so for neurons that have tertiaries dont include neurons without tert for population average for neurons that
 //centroid detection pop out what doesnt have a path 0 length 0
 
-
-//currently testtrace1 is correctly registering its tertiary
 
 // multiple treatments, input number of treatments, choose filenames for outputs
 //hard code lower limit at 0, allow changing of settings

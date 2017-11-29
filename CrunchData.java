@@ -37,7 +37,8 @@ public class CrunchData {
         String wrfile = "/Users/davi2705/Documents/neat.csv";
         FileWriter writer = null;
         writer = new FileWriter(wrfile);
-        nsort.wrt(writer, Arrays.asList("neuron","number of primaries","number of secondaries","number of tertiaries","avg dendrite length"));
+        nsort.wrt(writer, Arrays.asList("neuron","number of dendrites","total dendrite length","number of primaries","primary length","avg prim length",
+                "number of secondaries","sec length","avg sec len","number of tertiaries","tert length","avg tert len","avg dendrite length","avg branch length"));
         numofn = nldata.size();  //number of neurons entered
         int x = 0;
         while (x < numofn) {
@@ -90,7 +91,11 @@ public class CrunchData {
                 mosttert[0] = String.valueOf(cnur.tertnum);
                 mosttert[1] = cnur.neuronName;
             }
-            String[] tt = {cnur.neuronName, String.valueOf(cnur.primnum), String.valueOf(cnur.secnum), String.valueOf(cnur.tertnum),String.valueOf(cnur.avgdlen)+"um"};
+           int dendperp = cnur.primnum+cnur.secnum+cnur.tertnum; //number of dendrites per neuron
+            String[] tt = {cnur.neuronName, String.valueOf(dendperp),String.valueOf(avgdln),String.valueOf(cnur.primnum),String.valueOf(cnur.dend_1lensum),
+                    String.valueOf(cnur.dend_1lensum/cnur.primnum),String.valueOf(cnur.secnum),String.valueOf(cnur.dend_2lensum),
+                    String.valueOf(cnur.dend_2lensum/cnur.secnum),String.valueOf(cnur.tertnum), String.valueOf(cnur.dend_3lensum),String.valueOf(cnur.dend_3lensum/cnur.tertnum),
+                    String.valueOf(cnur.avgdlen),String.valueOf((cnur.dend_2lensum+cnur.dend_3lensum)/(cnur.secnum+cnur.tertnum))};
             nsort.wrt(writer, Arrays.asList(tt));
 
             x++;
@@ -103,6 +108,10 @@ public class CrunchData {
         avgprmln = (avgprmln / avgprm);
         avgsecln = (avgsecln / avgsec);
         avgtertln = (avgtertln / avgtert);
+        double popprimes = avgprm;
+        double popsecs = avgsec;
+        double popterts = avgtert;
+       // double popdendnum =
         avgdln = (avgdln / denum);
         avgprm = (avgprm / numofn);
         avgsec = avgsec / numofn;
@@ -120,17 +129,82 @@ public class CrunchData {
         System.out.println("average number of tertiaries per neuron = " + avgtert);
         System.out.println("average tertiary length = " + avgtertln);
         //System.out.println(totdendlen+" "+totdendlen1+" "+ totdendlen2+" "+totdendlen3);
-        String[] ff = new String[]{"average primary length = ", Double.toString(avgprmln)+"um","longest primary is on neuron ", longprm.pneuron ,
-                "  id= "+Double.toString(longprm.id) , " length= " , Double.toString(longprm.dendLeng)+"um"};
+        String[] ff = new String[]{"average primary length = ", Double.toString(avgprmln),"average secondary length = " ,Double.toString( avgsecln),"longest primary is on neuron ", longprm.pneuron,
+                "  id= "+Double.toString(longprm.id) , " length= " , Double.toString(longprm.dendLeng)};
         nsort.wrt(writer,Arrays.asList(ff));
-        String[] pp = new String[]{"average secondary length = " ,Double.toString( avgsecln)+"um"};
+        String[] pp = new String[]{"average secondary length = " ,Double.toString( avgsecln)};
         String[] qqq = new String[]{"population dendrite length ", Double.toString(totdendlen),"pop primary dendrite length",Double.toString(totdendlen1),
                 "pop second dendrite length",Double.toString(totdendlen2) , "pop tert dendrite length",Double.toString(totdendlen3)};
+        String[] blank = new String[]{" "};
+        String[] branchwrit = new String[]{"number of branches = " ,Double.toString( branchnum)};
+        String[] ntotwrit = new String[]{"number of neurons = " ,Integer.toString( numofn)};
+        String[] dtotwrit = new String[]{"number of dendrites = " ,Integer.toString( denum)};
+        String[] popavgprime  = new String[]{"Average # of 1 = " ,Double.toString(popprimes/numofn)}; //avg num of primary per neuron
+        String[] popavgsec  = new String[]{"Average # of 2 = " ,Double.toString(popsecs/numofn)}; //avg num of secondary per neuron
+        String[] popavgtert  = new String[]{"Average # of 3 = " ,Double.toString(popterts/numofn)}; //avg num of tertiary par neuron
+        String[] popavglength = new String[]{"pop avg dend length",Double.toString(avgdln)};
+
         nsort.wrt(writer,Arrays.asList(pp));
         nsort.wrt(writer,Arrays.asList(qqq));
+        nsort.wrt(writer,Arrays.asList(blank));
+        nsort.wrt(writer,Arrays.asList(branchwrit));
+        nsort.wrt(writer,Arrays.asList(ntotwrit));
+        nsort.wrt(writer,Arrays.asList(dtotwrit));
+        nsort.wrt(writer,Arrays.asList(popavgprime));
+        nsort.wrt(writer,Arrays.asList(popavgsec));
+        nsort.wrt(writer,Arrays.asList(popavgtert));
+        nsort.wrt(writer,Arrays.asList(popavglength));
+
+
+
+/*        File directory = new File("/Users/davi2705/Documents/Nprog/traced/cntrl exdose traced");
+        //get all the files from a directory
+        File[] fList = directory.listFiles();
+        for (File file : fList){
+            if (file.isDirectory()){
+                //System.out.println(file.getName());
+                File folder = new File(file.getName());
+                File[] listOfFiles = folder.listFiles();
+
+                for (File infile : listOfFiles) {
+                    if (infile.isFile()) {
+                        System.out.println(file.getName());
+                    }
+                }
+            }
+        }*/
+
+
+
+
+
+
+
+ /*       File directory = new File("/Users/davi2705/Documents/Nprog/traced/cntrl exdose traced");
+        File[] listOfFiles = folder.listF();
+
+        for (File file : listOfFiles) {
+            if (file.isFile()) {
+                File[] infile = file.listFiles();
+                System.out.println(file.getName());
+                //for ( File innerfile : infile) {
+                  //  if( innerfile.isFile()){
+                  //      System.out.println(innerfile.getName());
+                  //  }
+               // }
+            }
+        }
+*/
+
         writer.flush();
         writer.close();
 
 
-    }
+
+
+        }
+
+
+
+
 }
