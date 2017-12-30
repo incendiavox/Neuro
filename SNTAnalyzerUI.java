@@ -20,6 +20,7 @@ public class SNTAnalyzerUI extends JPanel implements ActionListener{
      *   images/Pig.gif
      */
     // Test for Git
+    // New change
 
         JLabel picture;
         String minString = "1";
