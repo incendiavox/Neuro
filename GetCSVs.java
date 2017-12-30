@@ -9,16 +9,23 @@ public class GetCSVs {
     //String[] csvnames = new String[] {};
     List<String> csvlist = new ArrayList<>();
     public void GetCSVs(String directoryName){
+        int sholl = 0;
         File directory = new File(directoryName);
         //get all the files from a directory
         File[] fList = directory.listFiles();
         for (File file : fList){
             if (file.isFile()&& (file.toString().contains("csv"))){
-                //System.out.println(file.getAbsolutePath());
-                csvlist.add(file.getAbsolutePath());
+                if (file.toString().contains("sholl")){
+                    //System.out.println("sholl");
+                    sholl++;
+                }else {
+                    //System.out.println(file.getAbsolutePath());
+                    csvlist.add(file.getAbsolutePath());
+                }
             } else if (file.isDirectory()){
                  GetCSVs(file.getAbsolutePath());
             }
         }
+        //System.out.println(csvlist.size());
     }
 }

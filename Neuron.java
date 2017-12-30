@@ -1,3 +1,6 @@
+import jdk.nashorn.internal.runtime.regexp.joni.constants.StringType;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -20,11 +23,16 @@ public class Neuron {
     double dend_1lensum; // total primary length for neuron  "these need the math hooked up"
     double dend_2lensum; // total secondery length for neuron
     double dend_3lensum; // total tertiary length for neuron
+    double long_prime; //longest primary length
+    double short_prime; //shortest primary length
     String neuronName;  //file name of neuron
     private String[][] neuronData; //data for neuron
     final List<Dendrite> dendlist = new ArrayList<>();
+    int cerror = 0; // if this isnt 0 we got an error, also this is jank
+
     //constructor of neuron object
     public Neuron(String filename,int n){
+       // System.out.println(filename);
         neuronData = nsort.read1(filename);
          nnn = n;
         //neuronData = nsort.read1("/Users/davi2705/Documents/Nprog/traced/traces/"+filename);  for test files
@@ -44,6 +52,9 @@ public class Neuron {
         int q = 0;
         int pare;
 
+        if(String.valueOf(neuronData[0][0]).equals(0) || String.valueOf(neuronData[0][4]).equals(0)){
+            cerror = 2;
+        }
 /*        Scanner reader = new Scanner(System.in);  // Reading from System.in
         System.out.println("Enter column with length data: ");
         int n = reader.nextInt(); // Scans the next token of the input as an int.
@@ -54,21 +65,32 @@ public class Neuron {
             String[] dinfo = neuronData[x];
             String ary = new String("True");
             int dosomemath = 1; //do math to figure out how many kids
-            if(dinfo[3].equals("true")||dinfo[nnn-1].equals("TRUE")||dinfo[nnn-1].equals("True")){
+
+/*            if (!Double.isNaN(Double.parseDouble(dinfo[nnn - 4]))) {
+                cerror = 1;
+            }
+            //make sure length is a number
+            if (!Double.isNaN(Double.parseDouble(dinfo[nnn]))) {
+                cerror = 1;
+            }*/
+            if(dinfo[nnn-1].equals("true")||dinfo[nnn-1].equals("TRUE")||dinfo[nnn-1].equals("True")){
                 ary = "Primary";
                 primnum++;
                 try {
-                    dosomemath = Math.round(dinfo[9].length()/2);
+                    dosomemath = Math.round(dinfo[nnn+5].length()/2);
                     //System.out.println("got" + dosomemath);
 
                 }catch(NumberFormatException e){
                     dosomemath= 0;
+                    cerror = 1;
                 }
             }else{
                 //while(q<hold){
                 //System.out.println(x+" "+neuronData[Integer.valueOf(neuronData[x][6])][3]);
+                //System.out.println(neuronName+" "+neuronData[x][0]+ " "+ neuronData[x][nnn+2]);
                 try {
-                    if (neuronData[Integer.parseInt(neuronData[x][6])][3].equals("true")||neuronData[Integer.parseInt(neuronData[x][6])][3].equals("TRUE")) {
+
+                    if (neuronData[Integer.parseInt(neuronData[x][nnn+2])][nnn-1].equals("true")||neuronData[Integer.parseInt(neuronData[x][nnn+2])][nnn-1].equals("TRUE")||neuronData[Integer.parseInt(neuronData[x][nnn+2])][nnn-1].equals("True")) {
                         ary = "Secondary";
                         secnum ++;
                     } else {
@@ -76,7 +98,7 @@ public class Neuron {
                         ary = "Tertiary";
                         tertnum++;
                     }
-                }catch (NumberFormatException e){
+                }catch (NumberFormatException  | NullPointerException e){
                     ary = "Secondary";
                     secnum++;
                 }
@@ -105,13 +127,22 @@ public class Neuron {
            // dendlist.add(new Dendrite(neuronName,Integer.parseInt(dinfo[0]),
                //     ary,dinfo[4],pare,dinfo[9],dosomemath));
             // user input
+
+            //error detection
+            if(Double.valueOf(dinfo[nnn])>1000||Double.valueOf(dinfo[nnn])<1){
+                cerror = 1;
+            }
+
+
             dendlist.add(new Dendrite(neuronName,Integer.parseInt(dinfo[0]),
                     ary,dinfo[nnn],pare,dinfo[(nnn+5)],dosomemath));
 
             avgdlen+= Double.valueOf(dinfo[nnn]);
+            dendlensum+= Double.valueOf(dinfo[nnn]);
             x++;
         }
         avgdlen= avgdlen/dendriteNum;
+        short_prime = 200;
         //System.out.println(dendlist);
     }
 

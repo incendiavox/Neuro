@@ -63,7 +63,7 @@ public class nsort {
 
         public static String[][] read1(String args) {
             String csvfile = "/Users/davi2705/Documents/Nprog/test_trace2.csv";
-            String[] hold1 = new String[800];
+            String[] hold1 = new String[8000];
             int hpnt1 = 0;  //holds which dendrite is currently being read
             String thisfile = new String(args);
             BufferedReader br = null;
@@ -213,15 +213,16 @@ public class nsort {
 
 
         public static void main(String[]args) throws Exception{
-            String wrfile = "/Users/davi2705/Documents/neat.csv";
+            String wrfile = "/Users/davi2705/Documents/two.csv";
             FileWriter writer = new FileWriter(wrfile);
             //nsort.wrt(writer, Arrays.asList("its","over","9000"));
 
-/*    hard coded testing
+    //hard coded testing
             //read1("/Users/davi2705/Documents/Nprog/traced/traces/test_trace2.csv");
-            Neuron n1 = new Neuron("test_trace2.csv");
-            Neuron n3 = new Neuron("test_trace3.csv");
-            Neuron n2 = new Neuron("test_trace1.csv");
+            //Neuron n1 = new Neuron("test_trace2.csv");
+            //Neuron n1 = new Neuron("C:\\Users\\davi2705\\Documents\\Nprog\\traced\\cntrl exdose traced\\EmilyMM1-01-19-17-DIV19-cntrl(exdose)_10\\EmilyMM1-01-19-17-DIV19-cntrl(exdose)_10_MMStack_Pos0.ome.csv",3);
+            //Neuron n3 = new Neuron("test_trace3.csv");
+            //Neuron n2 = new Neuron("test_trace1.csv");
             //Neuron n4 = new Neuron("EmilyMM3-01--17-DIV19-10uMDFO_12_MMStack_Pos0.ome.csv");
 
             //nsort.wrt(writer, Arrays.asList(hold1[5],hold2[100]));
@@ -231,9 +232,9 @@ public class nsort {
            // String d = n1.dendlist.get(0).level;
             //String d2 = n1.dendlist.get(7).level;
            //neuronList.add(n1);
-            neuronList.add(n1);
-            neuronList.add(n3);
-            neuronList.add(n2);
+            //neuronList.add(n1);
+            //neuronList.add(n3);
+           // neuronList.add(n2);
             //neuronList.add(n4);
             //Dendrite d312 = neuronList.get(1).dendlist.get(1);
             //Dendrite d2 = neuronList.get(2).dendlist.get(3);
@@ -248,51 +249,66 @@ public class nsort {
            //System.out.println( (d312.dendLeng<d3.dendLeng));
 
             //doData(neuronList);
-            CrunchData data = new CrunchData(neuronList);
+            //CrunchData data = new CrunchData(neuronList);
             //nsort.wrt(writer, Arrays.asList(d3.id+" "+d3.dendLeng,d312.level));
 
             //System.out.println(n1.dend_1lensum);
 
-            writer.flush();
-            writer.close();*/
+            //writer.flush();
+            //writer.close();
 
             //opens file
-            File file = new File("/Users/davi2705/Documents/neat.csv");
+            Scanner reader = new Scanner(System.in);  // Reading from System.in
+            System.out.println("Enter column with length data: ");
+            int n = reader.nextInt(); // Scans the next token of the input as an int.
+            /*System.out.println("Enter max length");
+            int nmax = reader.nextInt(); // Scans the next token of the input as an int.
+            System.out.println("Enter min length");
+            int nmin = reader.nextInt(); // Scans the next token of the input as an int.*/
+//once finished
+            reader.close();
+
+            //read1("/Users/davi2705/Documents/Nprog/traced/d_traced/DT_1_xii_16_687_40t");
+           Neuron n1 = new Neuron("C:/Users/davi2705/Documents/Nprog/traced/d_traced/DT_1_xii_16_687_40t.csv",n);
 
             //first check if Desktop is supported by Platform or not
+
+            GetCSVs emdata = new GetCSVs(); //"/Users/davi2705/Documents/Nprog/traced/cntrl exdose traced");
+            //emdata.GetCSVs("/Users/davi2705/Documents/Nprog/traced/cntrl exdose traced");
+            //emdata.GetCSVs("/Users/davi2705/Documents/Nprog/traced/cntrl no ex traced");
+            emdata.GetCSVs("/Users/davi2705/Documents/Nprog/traced/d_traced");
+            //System.out.println(emdata.csvlist.size());
+            int numfoundfiles = emdata.csvlist.size();
+            int cfile = 0;
+            while(cfile < numfoundfiles){
+                //System.out.println(emdata.csvlist.get(cfile));
+                Neuron addneuron = new Neuron(emdata.csvlist.get(cfile),n);
+                //System.out.println(addneuron.neuronName);
+                neuronList.add(addneuron);
+                cfile+=1;
+            }
+            //neuronList.add(n1);
+            //System.out.println(neuronList.size());
+            CrunchData data = new CrunchData(neuronList);
+
+
+
+            File file = new File("/Users/davi2705/Documents/neat.csv");
             if(!Desktop.isDesktopSupported()){
                 System.out.println("Desktop is not supported");
                 return;
             }
 
             Desktop desktop = Desktop.getDesktop();
-           // if(file.exists()) desktop.open(file);
+            //if(file.exists()) desktop.open(file);
 
-            // loop to add files to list
 
-            Scanner reader = new Scanner(System.in);  // Reading from System.in
-            System.out.println("Enter column with length data: ");
-            int n = reader.nextInt(); // Scans the next token of the input as an int.
-//once finished
-            reader.close();
 
-            GetCSVs emdata = new GetCSVs(); //"/Users/davi2705/Documents/Nprog/traced/cntrl exdose traced");
-            emdata.GetCSVs("/Users/davi2705/Documents/Nprog/traced/cntrl exdose traced");
-            System.out.println(emdata.csvlist.size());
-            int numfoundfiles = emdata.csvlist.size();
-            int cfile = 0;
-            while(cfile < numfoundfiles){
-               // System.out.println(emdata.csvlist.get(cfile));
-                Neuron addneuron = new Neuron(emdata.csvlist.get(cfile),n);
-                //System.out.println(addneuron.neuronName);
-                neuronList.add(addneuron);
-                cfile+=1;
-            }
 
-            CrunchData data = new CrunchData(neuronList);
+
 
             writer.flush();
-            writer.close();
+           writer.close();
         }
     }
     //Neurons in different rows with image name and calculations as column
