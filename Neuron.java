@@ -32,7 +32,7 @@ public class Neuron {
 
     //constructor of neuron object
     public Neuron(String filename,int n){
-       // System.out.println(filename);
+        System.out.println(n);
         neuronData = nsort.read1(filename);
          nnn = n;
         //neuronData = nsort.read1("/Users/davi2705/Documents/Nprog/traced/traces/"+filename);  for test files

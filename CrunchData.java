@@ -33,11 +33,12 @@ public class CrunchData {
     int numofn;
 
     Neuron cnur;  //current neuron from list
-    public CrunchData(List<Neuron> Neuronlistdata) throws Exception {
+    public CrunchData(List<Neuron> Neuronlistdata, File outputfile) throws Exception {
         List<Neuron> nldata = Neuronlistdata;  //nldata is imported list of neurons
-        String wrfile = "/Users/davi2705/Documents/neat.csv";
+       // String wrfile = "/Users/davi2705/Documents/neat.csv";
+
         FileWriter writer = null;
-        writer = new FileWriter(wrfile);
+        writer = new FileWriter(outputfile);
         nsort.wrt(writer, Arrays.asList("neuron","number of dendrites","total dendrite length","number of primaries","primary length","avg prim length",
                 "number of secondaries","sec length","avg sec len","number of tertiaries","tert length","avg tert len","avg dendrite length","avg branch length","num of branches","longest prim","shortest prim"));
         numofn = nldata.size();  //number of neurons entered

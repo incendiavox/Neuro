@@ -212,8 +212,55 @@ public class nsort {
         }**/
 
 
+
+
+        public static void callNsort( File directory,int pathLength ) throws Exception{
+            //String wrfile = directory.getPath()+ "/test.csv";  //todo: set date
+            File outputfile = File.createTempFile("test",".csv");
+            FileWriter writer = new FileWriter(outputfile);
+
+
+
+            GetCSVs emdata = new GetCSVs();
+            emdata.GetCSVs(directory.getPath());
+            //System.out.println(emdata.csvlist.size());
+            int numfoundfiles = emdata.csvlist.size();
+            int cfile = 0;
+            while(cfile < numfoundfiles){
+                //System.out.println(emdata.csvlist.get(cfile));
+                Neuron addneuron = new Neuron(emdata.csvlist.get(cfile),pathLength);
+                //System.out.println(addneuron.neuronName);
+                neuronList.add(addneuron);
+                cfile+=1;
+            }
+
+            //System.out.println(neuronList.size());
+            CrunchData data = new CrunchData(neuronList,outputfile);
+
+
+            if(!Desktop.isDesktopSupported()){
+                System.out.println("Desktop is not supported");
+                return;
+            }
+
+            Desktop desktop = Desktop.getDesktop();
+
+            writer.flush();
+            writer.close();
+
+            //File file = new File(wrfile);
+            if(outputfile.exists()) desktop.open(outputfile);
+        }
+
+
+
+
         public static void main(String[]args) throws Exception{
-            String wrfile = "/Users/davi2705/Documents/two.csv";
+
+            callNsort(new File("/Users/davi2705/Documents/Nprog/traced/d_traced"),4);
+            System.exit(0);
+
+/*            String wrfile = "/Users/davi2705/Documents/two.csv";
             FileWriter writer = new FileWriter(wrfile);
             //nsort.wrt(writer, Arrays.asList("its","over","9000"));
 
@@ -261,10 +308,10 @@ public class nsort {
             Scanner reader = new Scanner(System.in);  // Reading from System.in
             System.out.println("Enter column with length data: ");
             int n = reader.nextInt(); // Scans the next token of the input as an int.
-            /*System.out.println("Enter max length");
+            *//*System.out.println("Enter max length");
             int nmax = reader.nextInt(); // Scans the next token of the input as an int.
             System.out.println("Enter min length");
-            int nmin = reader.nextInt(); // Scans the next token of the input as an int.*/
+            int nmin = reader.nextInt(); // Scans the next token of the input as an int.*//*
 //once finished
             reader.close();
 
@@ -289,7 +336,7 @@ public class nsort {
             }
             //neuronList.add(n1);
             //System.out.println(neuronList.size());
-            CrunchData data = new CrunchData(neuronList);
+            //CrunchData data = new CrunchData(neuronList);
 
 
 
@@ -308,7 +355,7 @@ public class nsort {
 
 
             writer.flush();
-           writer.close();
+           writer.close();*/
         }
     }
     //Neurons in different rows with image name and calculations as column
