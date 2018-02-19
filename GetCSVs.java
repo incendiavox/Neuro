@@ -8,8 +8,10 @@ import java.util.List;
 public class GetCSVs {
     //String[] csvnames = new String[] {};
     List<String> csvlist = new ArrayList<>();
+    int somefiles = 0;
     public void GetCSVs(String directoryName){
         int sholl = 0;
+
         File directory = new File(directoryName);
         //get all the files from a directory
         File[] fList = directory.listFiles();
@@ -21,11 +23,11 @@ public class GetCSVs {
                 }else {
                     //System.out.println(file.getAbsolutePath());
                     csvlist.add(file.getAbsolutePath());
+                    somefiles++;
                 }
             } else if (file.isDirectory()){
                  GetCSVs(file.getAbsolutePath());
             }
         }
-        //System.out.println(csvlist.size());
     }
 }

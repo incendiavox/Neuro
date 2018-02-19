@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -214,48 +216,53 @@ public class nsort {
 
 
 
-        public static void callNsort( File directory,int pathLength,int minRange,int maxRange ) throws Exception{
-            //String wrfile = directory.getPath()+ "/test.csv";  //todo: set date, increase font, message if no files found, n for primaries and so on
-            File outputfile = File.createTempFile("test",".csv");
+        public static void callNsort( File directory,int pathLength,int minRange,int maxRange ) throws Exception {
+            //String wrfile = directory.getPath()+ "/test.csv";  //todo: n for primaries and so on
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_");
+            LocalDate localDate = LocalDate.now();
+            File outputfile = File.createTempFile("SNTA_"+dtf.format(localDate), ".csv");
             FileWriter writer = new FileWriter(outputfile);
-
 
 
             GetCSVs emdata = new GetCSVs();
             emdata.GetCSVs(directory.getPath());
-            //System.out.println(emdata.csvlist.size());
-            int numfoundfiles = emdata.csvlist.size();
-            int cfile = 0;
-            while(cfile < numfoundfiles){
-                //System.out.println(emdata.csvlist.get(cfile));
-                try {
-                    Neuron addneuron = new Neuron(emdata.csvlist.get(cfile), pathLength, minRange,maxRange);
-                    //System.out.println(addneuron.neuronName);
-                    neuronList.add(addneuron);
-                    cfile+=1;
-                }catch (NumberFormatException e){
+        if (emdata.somefiles == 0) {
+            SNTAnalyzerUI.infoBox("No tracing files of the correct type could be found", "No Files");
+        } else {
+                //System.out.println(emdata.csvlist.size());
+                int numfoundfiles = emdata.csvlist.size();
+                int cfile = 0;
+                while (cfile < numfoundfiles) {
+                    //System.out.println(emdata.csvlist.get(cfile));
+                    try {
+                        Neuron addneuron = new Neuron(emdata.csvlist.get(cfile), pathLength, minRange, maxRange);
+                        //System.out.println(addneuron.neuronName);
+                        neuronList.add(addneuron);
+                        cfile += 1;
+                    } catch (NumberFormatException e) {
                         SNTAnalyzerUI.totError = "nfe";
                         cfile = numfoundfiles;
+                    }
+
                 }
 
+                //System.out.println(neuronList.size());
+                CrunchData data = new CrunchData(neuronList, outputfile);
+
+
+                if (!Desktop.isDesktopSupported()) {
+                    System.out.println("Desktop is not supported");
+                    return;
+                }
+
+                Desktop desktop = Desktop.getDesktop();
+
+                writer.flush();
+                writer.close();
+
+                //File file = new File(wrfile);
+                if (outputfile.exists() && SNTAnalyzerUI.totError.equals("0")) desktop.open(outputfile);
             }
-
-            //System.out.println(neuronList.size());
-            CrunchData data = new CrunchData(neuronList,outputfile);
-
-
-            if(!Desktop.isDesktopSupported()){
-                System.out.println("Desktop is not supported");
-                return;
-            }
-
-            Desktop desktop = Desktop.getDesktop();
-
-            writer.flush();
-            writer.close();
-
-            //File file = new File(wrfile);
-            if(outputfile.exists()&& SNTAnalyzerUI.totError.equals("0")) desktop.open(outputfile);
         }
 
 
