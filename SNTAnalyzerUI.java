@@ -1,3 +1,5 @@
+import jdk.nashorn.internal.objects.Global;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -5,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.*;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  * Created by davi2705 on 12/29/2017.
@@ -19,9 +22,8 @@ public class SNTAnalyzerUI extends JPanel implements ActionListener{
      *   images/Rabbit.gif
      *   images/Pig.gif
      */
-    // Test for Git
-    // New change
-
+    //try to git it
+        public static String totError = "0";
         JLabel picture;
         String minString = "1";
         String maxString = "1000";
@@ -32,15 +34,16 @@ public class SNTAnalyzerUI extends JPanel implements ActionListener{
         String directoryPathString = "";
         File directoryPathFile = null;
 
-        static final String minLabelString = "minimum value";
-        static final String maxLabelString  ="maximum value" ;
-        static final String pathLenLabelString ="path length column";
-        static final String pathIDLabelString ="path id column" ;
-        static final String strtOnLabelString ="starts on column";
-        static final String primPathLabelString = "primary path label";
 
-        static final String processButtonLabelString = "Process files";
-        static final String directoryButtonLabelString = "Select directory";
+        static final String minLabelString = "Minimum value:";
+        static final String maxLabelString  ="Maximum value:" ;
+        static final String pathLenLabelString ="Path length column:";
+        static final String pathIDLabelString ="Path id column:" ;
+        static final String strtOnLabelString ="Starts on column:";
+        static final String primPathLabelString = "Primary path label:";
+
+        static final String processButtonLabelString = "Process files:";
+        static final String directoryButtonLabelString = "Select directory:";
 
         JButton processButton = null;
         JButton directoryButton = null;
@@ -51,23 +54,33 @@ public class SNTAnalyzerUI extends JPanel implements ActionListener{
         JComboBox startsOnPosList = null;
         JComboBox primPathPosList = null;
         List<String> colValsList= null;
+        List<String> maxValsList = null;
 
         public SNTAnalyzerUI() {
             super(new BorderLayout());
 
             //String[] petStrings = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-            String[] maxVals = {"Select","1","10","100","1000"};
+            String[] maxVals = {"Select","1","10","100","1000","10,000"};
             String[] minVals = {"Select","0","1","10","100"};
             String[] colVals = {"Select","A","B","C","D","E","F","G","H","I","J"};
             JLabel minLabel = new JLabel(minLabelString);
+            minLabel.setFont(new Font("Dialog",Font.BOLD,20));
             JLabel maxLabel = new JLabel(maxLabelString);
+            maxLabel.setFont(new Font("Dialog",Font.BOLD,20));
             JLabel pathLenLabel = new JLabel(pathLenLabelString);
+            pathLenLabel.setFont(new Font("Dialog",Font.BOLD,20));
             JLabel pathIDLabel = new JLabel(pathIDLabelString);
+            pathIDLabel.setFont(new Font("Dialog",Font.BOLD,20));
             JLabel strtOnLabel = new JLabel(strtOnLabelString);
+            strtOnLabel.setFont(new Font("Dialog",Font.BOLD,20));
             JLabel primPathLabel = new JLabel(primPathLabelString);
+            primPathLabel.setFont(new Font("Dialog",Font.BOLD,20));
             JLabel directoryLabel = new JLabel("Select directory:");
-            JLabel processLabel = new JLabel("Click to process files:");
+            directoryLabel.setFont(new Font("Dialog",Font.BOLD,20));
+            JLabel processLabel = new JLabel("Click to process files: ");
+            processLabel.setFont(new Font("Dialog",Font.BOLD,25));
             colValsList = Arrays.asList(colVals);
+            maxValsList = Arrays.asList(maxVals);
 
 
             //Create the combo box, select the item at index 4.
@@ -139,28 +152,6 @@ public class SNTAnalyzerUI extends JPanel implements ActionListener{
             add(secPanel,BorderLayout.PAGE_START);
 
 
-
-            //Set up the picture.
-            //picture = new JLabel();
-            //picture.setFont(picture.getFont().deriveFont(Font.ITALIC));
-            // picture.setHorizontalAlignment(JLabel.CENTER);
-            //updateLabel(petStrings[petList.getSelectedIndex()]);
-            //picture.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
-
-            //The preferred size is hard-coded to be the width of the
-            //widest image and the height of the tallest image + the border.
-            //A real program would compute this.
-            //picture.setPreferredSize(new Dimension(177, 122+10));
-
-            //Lay out the demo.
-            // add(minList, BorderLayout.PAGE_START);
-            //add(maxList, BorderLayout.LINE_END);
-            //add(pathLenPosList, BorderLayout.AFTER_LINE_ENDS);
-            //add(pathIDPosList, BorderLayout.AFTER_LINE_ENDS);
-            //add(startsOnPosList, BorderLayout.PAGE_END);
-            //add(primPathPosList, BorderLayout.PAGE_END);
-
-            //add(picture, BorderLayout.PAGE_END);
             setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         }
 
@@ -208,7 +199,8 @@ public class SNTAnalyzerUI extends JPanel implements ActionListener{
                         "\n\tPrimary Path Position = " + primPathPosString +
                         "\n\tDirectory to use = " + directoryPathString);
                 try {
-                    nsort.callNsort(directoryPathFile,colValsList.indexOf(pathLenPosString)-1);
+                    nsort.callNsort(directoryPathFile,colValsList.indexOf(pathLenPosString)-1,
+                            Integer.parseInt(minString),Integer.parseInt(maxString));
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
@@ -226,12 +218,13 @@ public class SNTAnalyzerUI extends JPanel implements ActionListener{
                 System.out.println("Return value: " + returnVal);
                 System.out.println("Selected file: " + fc.getSelectedFile());
             }
-            if(minList.getSelectedIndex()> 0 &&
+            if(//minList.getSelectedIndex()> 0 &&
                     maxList.getSelectedIndex() > 0 &&
                     pathLenPosList.getSelectedIndex() > 0 &&
                     pathIDPosList.getSelectedIndex() > 0 &&
                     startsOnPosList.getSelectedIndex() > 0 &&
                     primPathPosList.getSelectedIndex() > 0 &&
+                    maxList.getSelectedIndex() > minList.getSelectedIndex()&&
                     directoryPathFile!= null) {
                 processButton.setEnabled(true);
             }
@@ -248,7 +241,7 @@ public class SNTAnalyzerUI extends JPanel implements ActionListener{
          */
         private static void createAndShowGUI() {
             //Create and set up the window.
-            JFrame frame = new JFrame("ComboBoxDemo");
+            JFrame frame = new JFrame("SNT Analyzer");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             //Create and set up the content pane.
@@ -259,7 +252,12 @@ public class SNTAnalyzerUI extends JPanel implements ActionListener{
             //Display the window.
             frame.pack();
             frame.setVisible(true);
+
         }
+        public static void infoBox(String infoMessage, String titleBar)
+            {
+            JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
+            }
 
         public static void main(String[] args) {
             //Schedule a job for the event-dispatching thread:
@@ -268,6 +266,7 @@ public class SNTAnalyzerUI extends JPanel implements ActionListener{
                 public void run() {
                     createAndShowGUI();
                 }
+
             });
             //System.out.println("min: "+)
         }

@@ -15,6 +15,8 @@ public class Neuron {
     int secnum;  //number of secondaries on a neuron
     int tertnum;  //number of tertiaries
     int nnn; //where length data is
+    int minr; //min set range
+    int maxr; //max set range
     double avgdlen; //average dendrite length for neuron
     double avgprimlen; //average primary length
     double avgseclen;  //average secondary length
@@ -31,10 +33,12 @@ public class Neuron {
     int cerror = 0; // if this isnt 0 we got an error, also this is jank
 
     //constructor of neuron object
-    public Neuron(String filename,int n){
+    public Neuron(String filename,int n, int minRange,int maxRange){
         System.out.println(n);
         neuronData = nsort.read1(filename);
          nnn = n;
+         minr = minRange;
+         maxr = maxRange;
         //neuronData = nsort.read1("/Users/davi2705/Documents/Nprog/traced/traces/"+filename);  for test files
         dendriteNum = neuronData.length;
         dendriteNum -= 1;
@@ -51,8 +55,7 @@ public class Neuron {
         int x = 1;
         int q = 0;
         int pare;
-
-        if(String.valueOf(neuronData[0][0]).equals(0) || String.valueOf(neuronData[0][4]).equals(0)){
+        if(String.valueOf(neuronData[0][0]).equals(0) || String.valueOf(neuronData[0][nnn]).equals(0)){
             cerror = 2;
         }
 /*        Scanner reader = new Scanner(System.in);  // Reading from System.in
@@ -94,7 +97,6 @@ public class Neuron {
                         ary = "Secondary";
                         secnum ++;
                     } else {
-                        //testing still needs to be done here using a data set with tertiarys
                         ary = "Tertiary";
                         tertnum++;
                     }
@@ -129,7 +131,7 @@ public class Neuron {
             // user input
 
             //error detection
-            if(Double.valueOf(dinfo[nnn])>1000||Double.valueOf(dinfo[nnn])<1){
+            if(Double.valueOf(dinfo[nnn])>maxr ||Double.valueOf(dinfo[nnn])<minr){
                 cerror = 1;
             }
 

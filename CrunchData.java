@@ -37,6 +37,10 @@ public class CrunchData {
         List<Neuron> nldata = Neuronlistdata;  //nldata is imported list of neurons
        // String wrfile = "/Users/davi2705/Documents/neat.csv";
 
+        if(SNTAnalyzerUI.totError.equals("nfe")){
+            SNTAnalyzerUI.infoBox("Selected columns do not contain the correct data type","NFE");
+        }
+
         FileWriter writer = null;
         writer = new FileWriter(outputfile);
         nsort.wrt(writer, Arrays.asList("neuron","number of dendrites","total dendrite length","number of primaries","primary length","avg prim length",
@@ -48,16 +52,14 @@ public class CrunchData {
             denum += cnur.dendlist.size();
             //System.out.println(cnur.primnum);
             if (cnur.cerror == 1) {
-                nsort.wrt(writer, Arrays.asList(cnur.neuronName, "has incorrect data or units "));
+                nsort.wrt(writer, Arrays.asList(cnur.neuronName, "has incorrect data or units or data falls outside selected range"));
                 nldata.remove(x);
                 numofn--;
-                x++;
 
             }else if(cnur.cerror ==2){
                 nsort.wrt(writer, Arrays.asList(cnur.neuronName, "has incorrect centroid calibration "));
                 nldata.remove(x);
                 numofn--;
-                x++;
             } else {
                 int y = 0;
                 Dendrite cden;//current dendrite from current neuron
@@ -273,6 +275,7 @@ public class CrunchData {
         String[] popavglength = new String[]{"pop avg dend length",Double.toString(avgdln)};
         String[] avgtotdendlen = new String[]{"avg tot dendrite length", Double.toString(totdendlen/numofn),Double.toString(poptotlenstd),
                 Double.toString(poptotlenstd/(Math.pow(numofn,.5)))};
+        String[] userselections = new String[]{SNTAnalyzerUI.minLabelString};
 
         nsort.wrt(writer,Arrays.asList(blank));
         nsort.wrt(writer,Arrays.asList(blank));
@@ -293,6 +296,7 @@ public class CrunchData {
         nsort.wrt(writer,Arrays.asList(qq1));
         nsort.wrt(writer,Arrays.asList(qq2));
         nsort.wrt(writer,Arrays.asList(qq3));
+        nsort.wrt(writer,Arrays.asList(blank));
 
 
 

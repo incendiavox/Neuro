@@ -214,8 +214,8 @@ public class nsort {
 
 
 
-        public static void callNsort( File directory,int pathLength ) throws Exception{
-            //String wrfile = directory.getPath()+ "/test.csv";  //todo: set date
+        public static void callNsort( File directory,int pathLength,int minRange,int maxRange ) throws Exception{
+            //String wrfile = directory.getPath()+ "/test.csv";  //todo: set date, increase font, message if no files found, n for primaries and so on
             File outputfile = File.createTempFile("test",".csv");
             FileWriter writer = new FileWriter(outputfile);
 
@@ -228,10 +228,16 @@ public class nsort {
             int cfile = 0;
             while(cfile < numfoundfiles){
                 //System.out.println(emdata.csvlist.get(cfile));
-                Neuron addneuron = new Neuron(emdata.csvlist.get(cfile),pathLength);
-                //System.out.println(addneuron.neuronName);
-                neuronList.add(addneuron);
-                cfile+=1;
+                try {
+                    Neuron addneuron = new Neuron(emdata.csvlist.get(cfile), pathLength, minRange,maxRange);
+                    //System.out.println(addneuron.neuronName);
+                    neuronList.add(addneuron);
+                    cfile+=1;
+                }catch (NumberFormatException e){
+                        SNTAnalyzerUI.totError = "nfe";
+                        cfile = numfoundfiles;
+                }
+
             }
 
             //System.out.println(neuronList.size());
@@ -249,7 +255,7 @@ public class nsort {
             writer.close();
 
             //File file = new File(wrfile);
-            if(outputfile.exists()) desktop.open(outputfile);
+            if(outputfile.exists()&& SNTAnalyzerUI.totError.equals("0")) desktop.open(outputfile);
         }
 
 
@@ -257,7 +263,7 @@ public class nsort {
 
         public static void main(String[]args) throws Exception{
 
-            callNsort(new File("/Users/davi2705/Documents/Nprog/traced/d_traced"),4);
+            //callNsort(new File("/Users/davi2705/Documents/Nprog/traced/d_traced"),4);
             System.exit(0);
 
 /*            String wrfile = "/Users/davi2705/Documents/two.csv";
@@ -358,22 +364,6 @@ public class nsort {
            writer.close();*/
         }
     }
-    //Neurons in different rows with image name and calculations as column
-//look at tommys programs
-// number of total neurons at bottom with averages and standard deviation
-//population so for neurons that have tertiaries dont include neurons without tert for population average for neurons that
-//centroid detection pop out what doesnt have a path 0 length 0
 
-
-// multiple treatments, input number of treatments, choose filenames for outputs
-//hard code lower limit at 0, allow changing of settings
-//check calibration of length data
-
-//total length of all dendrites on neuron 1,2,3,all, total of branch length
-// number of branches, average branch length(second and tert summed)
-//average number of 1, 2, 3 for population, branches as well
-//average length of primaries on one neuron, as a population average number of primaries, branches as well
-//rejected file output list
-//background, popko guide, why I am doing this and the goals
 
 
