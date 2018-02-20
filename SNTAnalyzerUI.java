@@ -200,7 +200,9 @@ public class SNTAnalyzerUI extends JPanel implements ActionListener{
                         "\n\tDirectory to use = " + directoryPathString);
                 try {
                     nsort.callNsort(directoryPathFile,colValsList.indexOf(pathLenPosString)-1,
-                            Integer.parseInt(minString),Integer.parseInt(maxString));
+                            Integer.parseInt(minString),Integer.parseInt(maxString),colValsList.indexOf(pathIDPosString)-1,
+                            colValsList.indexOf(startsOnPosString)-1);
+                   // System.out.println(colValsList.indexOf(startsOnPosString));
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }

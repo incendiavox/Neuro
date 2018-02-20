@@ -17,6 +17,8 @@ public class Neuron {
     int nnn; //where length data is
     int minr; //min set range
     int maxr; //max set range
+    int pathid; // set path id
+    int startcol; // set starts on column
     double avgdlen; //average dendrite length for neuron
     double avgprimlen; //average primary length
     double avgseclen;  //average secondary length
@@ -33,12 +35,14 @@ public class Neuron {
     int cerror = 0; // if this isnt 0 we got an error, also this is jank
 
     //constructor of neuron object
-    public Neuron(String filename,int n, int minRange,int maxRange){
-        System.out.println(n);
+    public Neuron(String filename,int n, int minRange,int maxRange,int pathIDcol, int strCol){
+        //System.out.println(n);
         neuronData = nsort.read1(filename);
          nnn = n;
          minr = minRange;
          maxr = maxRange;
+         pathid = pathIDcol;
+         startcol = strCol;
         //neuronData = nsort.read1("/Users/davi2705/Documents/Nprog/traced/traces/"+filename);  for test files
         dendriteNum = neuronData.length;
         dendriteNum -= 1;
@@ -48,14 +52,14 @@ public class Neuron {
 
 
         //String[] dendrit =  neuronData[3];
-        //System.out.println(neuronData[1][1]);
+        //System.out.println(neuronData[0][0]);
     }
     public void setDendrites(){
         int hold = dendriteNum;
         int x = 1;
         int q = 0;
         int pare;
-        if(String.valueOf(neuronData[0][0]).equals(0) || String.valueOf(neuronData[0][nnn]).equals(0)){
+        if(String.valueOf(neuronData[pathid][0]).equals(0) || String.valueOf(neuronData[pathid][nnn]).equals(0)){
             cerror = 2;
         }
 /*        Scanner reader = new Scanner(System.in);  // Reading from System.in
@@ -93,7 +97,9 @@ public class Neuron {
                 //System.out.println(neuronName+" "+neuronData[x][0]+ " "+ neuronData[x][nnn+2]);
                 try {
 
-                    if (neuronData[Integer.parseInt(neuronData[x][nnn+2])][nnn-1].equals("true")||neuronData[Integer.parseInt(neuronData[x][nnn+2])][nnn-1].equals("TRUE")||neuronData[Integer.parseInt(neuronData[x][nnn+2])][nnn-1].equals("True")) {
+                    if (neuronData[Integer.parseInt(neuronData[x][startcol])][nnn-1].equals("true")
+                            ||neuronData[Integer.parseInt(neuronData[x][startcol])][nnn-1].equals("TRUE")
+                            ||neuronData[Integer.parseInt(neuronData[x][startcol])][nnn-1].equals("True")) {
                         ary = "Secondary";
                         secnum ++;
                     } else {
@@ -123,7 +129,7 @@ public class Neuron {
             }catch(NumberFormatException e){
                  pare = 0;
             }
-            //System.out.println(dinfo[9]);
+            //System.out.println(dinfo[0] + " "+pathid);
             //System.out.println(dinfo[3]);
             //hard coded
            // dendlist.add(new Dendrite(neuronName,Integer.parseInt(dinfo[0]),
@@ -136,7 +142,7 @@ public class Neuron {
             }
 
 
-            dendlist.add(new Dendrite(neuronName,Integer.parseInt(dinfo[0]),
+            dendlist.add(new Dendrite(neuronName,Integer.parseInt(dinfo[pathid]),
                     ary,dinfo[nnn],pare,dinfo[(nnn+5)],dosomemath));
 
             avgdlen+= Double.valueOf(dinfo[nnn]);

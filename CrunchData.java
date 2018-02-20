@@ -12,11 +12,14 @@ public class CrunchData {
     int denum = 0;//total amount of dendrites
     double avgdln = 0; //average dendrite length
     double avgprm = 0;  //average number of primaries per neuron
+    double numofprime = 0; //number of primaries
     double avgprmln = 0;  //average primary length
     double avgsec = 0;  //average number of secondaries
+    double numofsecond = 0; //number of secondaries
     double avgsecln = 0; //average secondary length
     double avgtert = 0;  //average number of tertiaries
     double avgtertln = 0;  //average length of tertiaries
+    double numoftert = 0; //number of teriary
     double totdendlen = 0; //total dendrite length of all in cell
     double totdendlen1 = 0; // total primary dendrite length
     double totdendlen2 = 0; // total secondary dendrite length
@@ -252,24 +255,24 @@ public class CrunchData {
         String[] qq2 = new String[]{"pop second dendrite length",Double.toString(totdendlen2)};
         String[] qq3 = new String[]{"pop tert dendrite length",Double.toString(totdendlen3)};
         String[] blank = new String[]{" "};
-        String[] titlestring = new String[]{" ","pop values","std","st err m", "avg of avg values","std","st err m"};
+        String[] titlestring = new String[]{" ","N", "pop values","std","st err m", "avg of avg values","std","st err m"};
         String[] branchwrit = new String[]{"number of branches = " ,Double.toString( branchnum)};
         String[] ntotwrit = new String[]{"number of neurons = " ,Integer.toString( numofn)};
         String[] dtotwrit = new String[]{"number of dendrites = " ,Integer.toString( denum)};
 
-        String[] popavgprime  = new String[]{"Average # of 1 = " ,Double.toString(popprimes/numofn),Double.toString(primnumstd),
+        String[] popavgprime  = new String[]{"Average # of 1 = " ,Double.toString(popprimes),Double.toString(popprimes/numofn),Double.toString(primnumstd),
                 Double.toString(primnumstd/(Math.pow(numofn,.5)))}; //avg num of primary per neuron
-        String[] popavgprlen = new String[]{"Average primary length = " ,Double.toString(avgprmln),Double.toString(pop_p_lenstd), Double.toString(pop_p_lenstd/(Math.pow(popprimes,.5)))
+        String[] popavgprlen = new String[]{"Average primary length = " ,Double.toString(popprimes),Double.toString(avgprmln),Double.toString(pop_p_lenstd), Double.toString(pop_p_lenstd/(Math.pow(popprimes,.5)))
                 ,Double.toString(avg2_prim_len),Double.toString(avg2primlenstd), Double.toString(avg2primlenstd/(Math.pow(numofn,.5)))};
 
-        String[] popavgsec  = new String[]{"Average # of 2 = " ,Double.toString(popsecs/numofn),Double.toString(secnumstd),
+        String[] popavgsec  = new String[]{"Average # of 2 = " ,Double.toString(popsecs),Double.toString(popsecs/numofn),Double.toString(secnumstd),
                 Double.toString(secnumstd/(Math.pow(numofn,.5)))}; //avg num of secondary per neuron
-        String[] pp = new String[]{"average secondary length = " ,Double.toString( avgsecln),Double.toString(pop_s_lenstd),Double.toString(pop_s_lenstd/(Math.pow(popsecs, .5))),
+        String[] pp = new String[]{"average secondary length = " ,Double.toString(popsecs),Double.toString( avgsecln),Double.toString(pop_s_lenstd),Double.toString(pop_s_lenstd/(Math.pow(popsecs, .5))),
                 Double.toString(avg2_sec_len),Double.toString(avg2seclenstd),Double.toString(avg2seclenstd/(Math.pow(numofn,.5)))};
 
-        String[] popavgtert  = new String[]{"Average # of 3 = " ,Double.toString(popterts/numofn),Double.toString(tertnumstd),
+        String[] popavgtert  = new String[]{"Average # of 3 = " ,Double.toString(popterts),Double.toString(popterts/numofn),Double.toString(tertnumstd),
                 Double.toString(tertnumstd/(Math.pow(numofn,.5)))}; //avg num of tertiary par neuron
-        String[] popavgtertlen = new String[]{"average tertiary length = " , Double.toString(avgtertln),Double.toString(pop_t_lenstd),Double.toString(pop_t_lenstd/(Math.pow(popterts, .5))),
+        String[] popavgtertlen = new String[]{"average tertiary length = " ,Double.toString(popterts), Double.toString(avgtertln),Double.toString(pop_t_lenstd),Double.toString(pop_t_lenstd/(Math.pow(popterts, .5))),
                 Double.toString(avg2_tert_len),Double.toString(avg2tertlenstd), Double.toString(avg2tertlenstd/(Math.pow(numofn,.5)))};
 
         String[] popavglength = new String[]{"pop avg dend length",Double.toString(avgdln)};
