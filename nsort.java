@@ -94,7 +94,7 @@ public class nsort {
                     //String[] name = line.split(cvsSplitBy);
                     String[] name = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
                     //System.out.println();
-                    //System.out.println(line);
+                    System.out.println(line);
                     while (x<15) {//x is which column is being read
                         //System.out.println(x);
                         dlist[hpnt1][x] = name[x];
@@ -216,9 +216,9 @@ public class nsort {
 
 
 
-        public static void callNsort( File directory,int pathLength,int minRange,int maxRange,int pathIDcol, int strCol )
+        public static void callNsort( File directory,int pathLength,int minRange,int maxRange,int pathIDcol, int strCol, int prim_path )
                 throws Exception {
-            //String wrfile = directory.getPath()+ "/test.csv";  //todo: n for primaries and so on
+            //String wrfile = directory.getPath()+ "/test.csv";
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_");
             LocalDate localDate = LocalDate.now();
             File outputfile = File.createTempFile("SNTA_"+dtf.format(localDate), ".csv");
@@ -234,9 +234,9 @@ public class nsort {
                 int numfoundfiles = emdata.csvlist.size();
                 int cfile = 0;
                 while (cfile < numfoundfiles) {
-                    System.out.println(strCol);
+                    //System.out.println(strCol);
                     try {
-                        Neuron addneuron = new Neuron(emdata.csvlist.get(cfile), pathLength, minRange, maxRange,pathIDcol,strCol);
+                        Neuron addneuron = new Neuron(emdata.csvlist.get(cfile), pathLength, minRange, maxRange,pathIDcol,strCol,prim_path);
                         //System.out.println(addneuron.neuronName);
                         neuronList.add(addneuron);
                         cfile += 1;
@@ -272,6 +272,8 @@ public class nsort {
         public static void main(String[]args) throws Exception{
 
             //callNsort(new File("/Users/davi2705/Documents/Nprog/traced/d_traced"),4);
+
+            //todo:
             System.exit(0);
 
 /*            String wrfile = "/Users/davi2705/Documents/two.csv";

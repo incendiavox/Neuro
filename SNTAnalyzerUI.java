@@ -60,7 +60,7 @@ public class SNTAnalyzerUI extends JPanel implements ActionListener{
             super(new BorderLayout());
 
             //String[] petStrings = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-            String[] maxVals = {"Select","1","10","100","1000","10,000"};
+            String[] maxVals = {"Select","1","10","100","1000","10000"};
             String[] minVals = {"Select","0","1","10","100"};
             String[] colVals = {"Select","A","B","C","D","E","F","G","H","I","J"};
             JLabel minLabel = new JLabel(minLabelString);
@@ -200,8 +200,8 @@ public class SNTAnalyzerUI extends JPanel implements ActionListener{
                         "\n\tDirectory to use = " + directoryPathString);
                 try {
                     nsort.callNsort(directoryPathFile,colValsList.indexOf(pathLenPosString)-1,
-                            Integer.parseInt(minString),Integer.parseInt(maxString),colValsList.indexOf(pathIDPosString)-1,
-                            colValsList.indexOf(startsOnPosString)-1);
+                            Integer.parseInt(minString), (int) Float.parseFloat(maxString),colValsList.indexOf(pathIDPosString)-1,
+                            colValsList.indexOf(startsOnPosString)-1,colValsList.indexOf(primPathPosString)-1);
                    // System.out.println(colValsList.indexOf(startsOnPosString));
                 } catch (Exception e1) {
                     e1.printStackTrace();
@@ -226,7 +226,7 @@ public class SNTAnalyzerUI extends JPanel implements ActionListener{
                     pathIDPosList.getSelectedIndex() > 0 &&
                     startsOnPosList.getSelectedIndex() > 0 &&
                     primPathPosList.getSelectedIndex() > 0 &&
-                    maxList.getSelectedIndex() > minList.getSelectedIndex()&&
+                    maxList.getSelectedIndex() >= minList.getSelectedIndex()&&
                     directoryPathFile!= null) {
                 processButton.setEnabled(true);
             }

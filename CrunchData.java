@@ -63,7 +63,10 @@ public class CrunchData {
                 nsort.wrt(writer, Arrays.asList(cnur.neuronName, "has incorrect centroid calibration "));
                 nldata.remove(x);
                 numofn--;
-            } else {
+             } else if(cnur.cerror ==3){
+                nsort.wrt(writer, Arrays.asList(cnur.neuronName,"incorrect primary path label"));
+            }
+            else{
                 int y = 0;
                 Dendrite cden;//current dendrite from current neuron
                 while (y < cnur.dendlist.size()) {
@@ -119,22 +122,22 @@ public class CrunchData {
                 }
                 if(Double.isNaN(cnur.dend_2lensum / cnur.secnum)){
                     cnur.dend_2lensum = 0;
-                    cnur.secnum = 1;
+                    cnur.secnum = 0;
                 }
                 if(Double.isNaN(cnur.dend_3lensum / cnur.tertnum)){
                     cnur.dend_3lensum = 0;
-                    cnur.tertnum = 1;
+                    cnur.tertnum = 0;
                 }
 
 
                 int dendperp = cnur.primnum + cnur.secnum + cnur.tertnum; //number of dendrites per neuron
-                String[] tt = {cnur.neuronName, String.valueOf(dendperp), String.valueOf(cnur.dend_2lensum + cnur.dend_3lensum + cnur.dend_1lensum),
+                String[] n_d_out = {cnur.neuronName, String.valueOf(dendperp), String.valueOf(cnur.dend_2lensum + cnur.dend_3lensum + cnur.dend_1lensum),
                         String.valueOf(cnur.primnum), String.valueOf(cnur.dend_1lensum),
                         String.valueOf(cnur.dend_1lensum / cnur.primnum), String.valueOf(cnur.secnum), String.valueOf(cnur.dend_2lensum),
                         String.valueOf(cnur.dend_2lensum / cnur.secnum), String.valueOf(cnur.tertnum), String.valueOf(cnur.dend_3lensum), String.valueOf(cnur.dend_3lensum / cnur.tertnum),
                         String.valueOf(cnur.avgdlen), String.valueOf((cnur.dend_2lensum + cnur.dend_3lensum) / (cnur.secnum + cnur.tertnum)),String.valueOf(cnur.secnum+cnur.tertnum),
                         Double.toString(cnur.long_prime), Double.toString(cnur.short_prime)};
-                nsort.wrt(writer, Arrays.asList(tt));
+                nsort.wrt(writer, Arrays.asList(n_d_out));
 
                 cnur.avgprimlen= cnur.dend_1lensum/cnur.primnum;
                 cnur.avgseclen= cnur.dend_2lensum/cnur.secnum;
