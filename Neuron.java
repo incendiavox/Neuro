@@ -34,7 +34,7 @@ public class Neuron {
     private String[][] neuronData; //data for neuron
     final List<Dendrite> dendlist = new ArrayList<>();
     int cerror = 0; // if this isnt 0 we got an error, also this is jank
-    private List<Integer>  helperList;
+    private List<Integer>  helperList = new ArrayList<>();
 
     //constructor of neuron object
     public Neuron(String filename,int n, int minRange,int maxRange,int pathIDcol, int strCol,int prim_path){
@@ -62,15 +62,15 @@ public class Neuron {
         int x = 1;
         int q = 0;
         int pare;
-        if(String.valueOf(neuronData[pathid][0]).equals(0) || String.valueOf(neuronData[pathid][nnn]).equals(0)){
+        /*if(String.valueOf(neuronData[pathid][0]).equals("0") && String.valueOf(neuronData[pathid][nnn]).equals("0")){
             cerror = 2;
-        }
+        }*/
        // System.out.println(neuronData[pathid][0] + " " + neuronData[pathid][nnn]);
         //System.out.println(neuronData[pathid][0].equals("0")+ " " +neuronData[pathid][nnn].equals("0"));
         if(neuronData[pathid][0].equals("0") && neuronData[pathid][nnn].equals("0")){
             System.out.println("smh");
             hold += 1;
-            //todo make it set x to 0 instead of 1?
+            //todo get list working
         }
 /*        Scanner reader = new Scanner(System.in);  // Reading from System.in
         System.out.println("Enter column with length data: ");
@@ -80,8 +80,10 @@ public class Neuron {
         //while loop to create the right number of dendrite objects with info put in
         while( x < hold){
             String[] dinfo = neuronData[x];
-            helperList.add(x, Integer.parseInt(dinfo[0]));
-           // System.out.println(x + " " + dinfo[0] + " " + hold + neuronData.length);
+            int helpint = Integer.parseInt(dinfo[0]);
+            System.out.println("dend id " + Integer.parseInt(dinfo[0]) + " x "+ x);
+            helperList.add( helpint);
+            //System.out.println(x + " " + dinfo[0] + " " + hold + neuronData.length);
             String ary = new String("True");
             int dosomemath = 1; //do math to figure out how many kids
 
@@ -109,11 +111,14 @@ public class Neuron {
                 }
             }else{
                 //while(q<hold){
-                System.out.println(x+" "+Integer.parseInt(neuronData[x][startcol]));
+               // System.out.println(x+" "+Integer.parseInt(neuronData[x][startcol]));
                 //System.out.println(neuronName+" "+neuronData[x][0]+ " "+ neuronData[x][nnn+2]);
+                int helpVal =    1 + helperList.indexOf( Integer.parseInt(neuronData[x][startcol]));
+                System.out.println("helpval " + helpVal);
                 try {
-                         int helpVal =    helperList.indexOf( Integer.parseInt(neuronData[x][startcol]));
-                    if (neuronData[Integer.parseInt(neuronData[x][startcol])][primarypathcol].equals("true")
+                         //int helpVal =    helperList.indexOf( Integer.parseInt(neuronData[x][startcol]));
+                           // System.out.println(helpVal);
+                    if (neuronData[helpVal][primarypathcol].equals("true")
                             ||neuronData[Integer.parseInt(neuronData[x][startcol])][primarypathcol].equals("TRUE")
                             ||neuronData[Integer.parseInt(neuronData[x][startcol])][primarypathcol].equals("True")) {
                         ary = "Secondary";
